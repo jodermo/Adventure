@@ -1,0 +1,22 @@
+{
+  "metadata": {
+    "soundFile": "D:\\documents\\Unreal Projects\\Adventure\\ThirdParty\\Rhubarb-Lip-Sync-1.13.0-Windows\\three-two-one-fight-deep-voice-38382.wav",
+    "duration": 5.71
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.15, "value": "X" },
+    { "start": 0.15, "end": 0.21, "value": "E" },
+    { "start": 0.21, "end": 0.26, "value": "F" },
+    { "start": 0.26, "end": 1.17, "value": "B" },
+    { "start": 1.17, "end": 1.80, "value": "F" },
+    { "start": 1.80, "end": 2.01, "value": "B" },
+    { "start": 2.01, "end": 2.15, "value": "F" },
+    { "start": 2.15, "end": 2.43, "value": "E" },
+    { "start": 2.43, "end": 2.71, "value": "F" },
+    { "start": 2.71, "end": 3.27, "value": "B" },
+    { "start": 3.27, "end": 3.34, "value": "C" },
+    { "start": 3.34, "end": 3.55, "value": "B" },
+    { "start": 3.55, "end": 3.76, "value": "F" },
+    { "start": 3.76, "end": 5.71, "value": "X" }
+  ]
+}

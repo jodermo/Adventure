@@ -1,0 +1,22 @@
+Designed, modelled & rigged by Ben Tiefholz
+
+I'm giving away my models. Free to use.
+
+www.tiefholz.com
+http://www.redbubble.com/people/datsunstyle
+http://www.redbubble.com/people/tiefholz
+
+
+Ben Tiefholz is in Tasmania. 
+He has done animation and graphics for tv, 
+planetarium, museum, and other things.
+
+--
+
+PEN_Attribute_holder_2.06.ms is the script needed for eye control.
+
+C:\Projects\Super Mouse\Development\Maps\SM\SM_Head_BumpMap1024_01.png
+C:\Projects\Super Mouse\Development\Logos\SM_Logo_GB_01.png
+C:\Projects\Super Mouse\Development\Maps\Miscs\LEAVES-BW.jpg
+C:\Projects\Super Mouse\Development\Maps\Miscs\BLKGRAN1.jpg
+C:\Projects\Super Mouse\Development\Maps\Miscs\FoliageBW1.jpg

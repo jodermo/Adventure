@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "soundFile": "D:\\documents\\Unreal Projects\\Adventure\\ThirdParty\\Rhubarb-Lip-Sync-1.13.0-Windows\\cowabunga-voiced-165997.wav",
+    "duration": 2.89
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.20, "value": "X" },
+    { "start": 0.20, "end": 0.90, "value": "B" },
+    { "start": 0.90, "end": 1.00, "value": "A" },
+    { "start": 1.00, "end": 1.07, "value": "B" },
+    { "start": 1.07, "end": 1.35, "value": "D" },
+    { "start": 1.35, "end": 2.89, "value": "X" }
+  ]
+}
