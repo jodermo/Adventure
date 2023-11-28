@@ -8,6 +8,7 @@
 #include "NiagaraSystem.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "DraggableActor.h"
 #include "ItemActor.generated.h"
 
 class AInteractionActor;
@@ -15,14 +16,14 @@ class AAdventureCharacter;
 class AAdventureGameModeBase;
 
 UCLASS()
-class ADVENTURE_API AItemActor : public AActor
+class ADVENTURE_API AItemActor : public ADraggableActor
 {
 	GENERATED_BODY()
 
 public:
 	AItemActor();
 
-	AAdventureGameModeBase* GameMode;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logging")
 	ULogging* Logger;
@@ -134,7 +135,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Actor")
 	bool Collectable = false;
-
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Area Configuration", meta = (ToolTip = "Make character unrecognizable inside this area."))

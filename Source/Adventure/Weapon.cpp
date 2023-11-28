@@ -174,19 +174,25 @@ void AWeapon::NotifyHit(
 void AWeapon::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	// Log("AWeapon OnOverlapBegin: " + GetName() + " <- " + (OtherActor ? OtherActor->GetName() : "None"));
-	if (Character && OtherActor != Character) 
+	if (OtherActor && OtherActor->IsA(AAdventureCharacter::StaticClass()))
 	{
-		AAdventureCharacter* OtherCharacter = Cast<AAdventureCharacter>(OtherActor);
-		FVector HitLocation = SweepResult.ImpactPoint;
-		FVector HitNormal = SweepResult.ImpactNormal;
-		FVector NormalImpulse = SweepResult.Normal;
-		if (OtherCharacter && PrimaryMeleeDamage != 0.0f) 
+		if (Character && OtherActor != Character)
 		{
-			OtherCharacter->TakeDamageAtLocation(PrimaryMeleeDamage, HitLocation, NormalImpulse, this);
-		}
-		if (OtherCharacter && SecondaryMeleeDamage != 0.0f) 
-		{
-			OtherCharacter->TakeDamageAtLocation(SecondaryMeleeDamage, HitLocation, NormalImpulse, this);
+			AAdventureCharacter* OtherCharacter = Cast<AAdventureCharacter>(OtherActor);
+			if (OtherCharacter) {
+				FVector HitLocation = OtherCharacter->GetActorLocation() + SweepResult.ImpactPoint;
+				FVector HitNormal = SweepResult.ImpactNormal;
+				FVector NormalImpulse = SweepResult.Normal;
+				if (OtherCharacter && PrimaryMeleeDamage != 0.0f)
+				{
+					OtherCharacter->TakeDamageAtLocation(PrimaryMeleeDamage, HitLocation, NormalImpulse, this);
+				}
+				if (OtherCharacter && SecondaryMeleeDamage != 0.0f)
+				{
+					OtherCharacter->TakeDamageAtLocation(SecondaryMeleeDamage, HitLocation, NormalImpulse, this);
+				}
+			}
+
 		}
 	}
 	Super::OnOverlapBegin(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);

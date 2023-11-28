@@ -127,6 +127,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Input", meta = (AllowPrivateAccess = "true", ToolTip = "Input action for zooming."))
 	class UInputAction* ZoomAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Input", meta = (AllowPrivateAccess = "true", ToolTip = "Input action for using item."))
+	class UInputAction* GrabActorAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Input", meta = (AllowPrivateAccess = "true", ToolTip = "Input action for using item."))
+	class UInputAction* DropActorAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Input", meta = (AllowPrivateAccess = "true", ToolTip = "Input action for using item."))
+	class UInputAction* ThrowActorAction;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Input", meta = (AllowPrivateAccess = "true", ToolTip = "Input action for accept button in menu."))
@@ -270,6 +278,11 @@ public:
 	void OnSwitchCamera(const FInputActionValue& Value);
 	void OnMoveForward(const FInputActionValue& Value);
 	void OnMoveRight(const FInputActionValue& Value);
+
+	void OnGrabActor(const FInputActionValue& Value);
+	void OnDropActor(const FInputActionValue& Value);
+	void OnThrowActor(const FInputActionValue& Value);
+
 
 	void OnMoveCameraUp(const FInputActionValue& Value);
 	void OnMoveCameraForward(const FInputActionValue& Value);

@@ -111,6 +111,11 @@ void AAdventurePlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(Interact, ETriggerEvent::Started, this, &AAdventurePlayerController::OnInteract);
 
 
+		EnhancedInputComponent->BindAction(GrabActorAction, ETriggerEvent::Triggered, this, &AAdventurePlayerController::OnGrabActor);
+		EnhancedInputComponent->BindAction(DropActorAction, ETriggerEvent::Triggered, this, &AAdventurePlayerController::OnDropActor);
+		EnhancedInputComponent->BindAction(ThrowActorAction, ETriggerEvent::Triggered, this, &AAdventurePlayerController::OnThrowActor);
+
+
 		EnhancedInputComponent->BindAction(PrimaryWeaponPrimaryActionAction, ETriggerEvent::Started, this, &AAdventurePlayerController::OnPrimaryWeaponPrimaryAction);
 		EnhancedInputComponent->BindAction(PrimaryWeaponSecondaryActionAction, ETriggerEvent::Started, this, &AAdventurePlayerController::OnPrimaryWeaponSecondaryAction);
 		EnhancedInputComponent->BindAction(SecondaryWeaponPrimaryActionAction, ETriggerEvent::Started, this, &AAdventurePlayerController::OnSecondaryWeaponPrimaryAction);
@@ -711,3 +716,28 @@ void AAdventurePlayerController::OnGameStop(const FInputActionValue& Value)
 	}
 }
 
+
+
+void AAdventurePlayerController::OnGrabActor(const FInputActionValue& Value)
+{
+	if (Character)
+	{
+		Character->GrabClosestActor();
+	}
+}
+
+void AAdventurePlayerController::OnDropActor(const FInputActionValue& Value)
+{
+	if (Character)
+	{
+		Character->DropActor();
+	}
+}
+
+void AAdventurePlayerController::OnThrowActor(const FInputActionValue& Value)
+{
+	if (Character)
+	{
+		Character->ThrowActorForward();
+	}
+}

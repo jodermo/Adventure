@@ -30,8 +30,7 @@ AItemActor::AItemActor()
 void AItemActor::BeginPlay()
 {
 	Super::BeginPlay();
-	AGameModeBase* CurrentGameMode = GetWorld()->GetAuthGameMode();
-	GameMode = Cast<AAdventureGameModeBase>(CurrentGameMode);
+
 	if (Mesh)
 	{
 		Mesh->SetupAttachment(RootComponent);

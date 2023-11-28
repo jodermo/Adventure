@@ -24,6 +24,7 @@ class APlayerCharacter;
 class AAdventurePlayerController;
 class AVehicle;
 class AEnvironmentalObject;
+class ADraggableActor;
 
 USTRUCT(BlueprintType)
 struct FPlayerView
@@ -156,6 +157,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Mode", meta = (ToolTip = "Array of top-down characters has lost."))
 	TArray<AGameCharacter*> GameOverCharacters;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Mode", meta = (ToolTip = "Array of top-down characters in the game."))
+	TArray<ADraggableActor*> DraggableActors;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Mode", meta = (ToolTip = "Array of vehicles in the game."))
 	TArray<AVehicle*> Vehicles;

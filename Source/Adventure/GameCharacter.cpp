@@ -2,6 +2,8 @@
 #include "Components/SkinnedMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Math/TransformNonVectorized.h"
+#include "Components/PrimitiveComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AGameCharacter::AGameCharacter()
 {
@@ -36,6 +38,9 @@ AGameCharacter::AGameCharacter()
 
     AudioAnalyser = CreateDefaultSubobject<UAudioAnalyserComponent>(TEXT("AudioAnalyser"));
     AudioAnalyser->Character = this;
+
+    GetHitParticles = CreateDefaultSubobject<UNiagaraSystem>(TEXT("GetHitParticles"));
+
 
 	InitCharacter();
 }
@@ -84,9 +89,11 @@ void AGameCharacter::Tick(float DeltaTime)
     FVector Velocity = GetVelocity();
     FVector ForwardVector = GetActorForwardVector();
     CurrentSpeed = (Velocity * ForwardVector).Size();
+    DetectClosestActor(DeltaTime);
     SetMovementAnimation(DeltaTime);
 	UpdateAnimationStates(DeltaTime);
     CheckStill(DeltaTime);
+
     if (CharacterWidget)
     {
         CharacterWidget->SetRelativeLocation(CharacterWidgetLocation);
@@ -371,7 +378,128 @@ float AGameCharacter::ReceiveDamage(float DamageAmount)
 
 float AGameCharacter::TakeDamageAtLocation(float DamageAmount, FVector HitLocation, FVector ImpulseVelocity, AActor* OtherActor)
 {
+   
     ImpulseAtLocation(ImpulseVelocity, HitLocation);
     ReceiveDamage(DamageAmount);
+    UWorld* World = GetWorld();
+    if (GetHitParticles)
+    {
+        if (World)
+        {
+            UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+                World,
+                GetHitParticles,
+                GetActorLocation(),
+                GetActorRotation()
+            );
+        }
+    }
+
     return DamageAmount;
+}
+
+void AGameCharacter::DetectClosestActor(float DeltaTime)
+{
+    if (!GrabbedActor && GameMode && GameMode->DraggableActors.Num())
+    {
+        NearbyDraggableActors.Empty();
+
+
+        ADraggableActor* NearestActor = nullptr;
+        float MinDistance = DetectDraggableActorRadiusMin;
+        FVector MyLocation = GetActorLocation();
+
+        for (ADraggableActor* DraggableActor : GameMode->DraggableActors)
+        {
+            if (DraggableActor && DraggableActor->Draggable)
+            {
+                float Distance = FVector::Dist(DraggableActor->GetActorLocation(), MyLocation);
+                if (Distance >= MinDistance && Distance <= DetectDraggableActorRadiusMax)
+                {
+                    MinDistance = Distance;
+                    NearestActor = DraggableActor;
+                }
+                NearbyDraggableActors.Add(DraggableActor);
+            }
+        }
+        if (NearestActor && NearestActor != ClosestDraggableActor)
+        {
+            Log("ClosestActor: " + NearestActor->GetName());
+            ClosestDraggableActor = NearestActor;
+        }
+    }
+    else if(NearbyDraggableActors.Num() || ClosestDraggableActor)
+    {
+        NearbyDraggableActors.Empty();
+        ClosestDraggableActor = nullptr;
+    }
+   
+}
+
+
+void AGameCharacter::GrabClosestActor()
+{
+    if (ClosestDraggableActor && !GrabbedActor)
+    {
+        Log("GrabClosestActor: " + ClosestDraggableActor->GetName());
+        GrabActor(ClosestDraggableActor);
+        ClosestDraggableActor = nullptr;
+    }
+    else 
+    {
+        Log("GrabClosestActor: None");
+    }
+}
+
+void AGameCharacter::GrabActor(ADraggableActor* DraggableActor)
+{
+    if (DraggableActor && !GrabbedActor)
+    {
+        Log("GrabActor: " + DraggableActor->GetName());
+        GrabbedActor = DraggableActor;
+        GrabbedActor->RootMesh->SetSimulatePhysics(false);
+        GrabbedActor->RootMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        DraggableActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, DraggableActorSlot);
+    }
+}
+
+void AGameCharacter::DropActor()
+{
+    if (GrabbedActor)
+    {
+        Log("DropActor: " + GrabbedActor->GetName());
+        GrabbedActor->SetActorHiddenInGame(false);
+        GrabbedActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        GrabbedActor->SetActorLocation(GetActorLocation() + (ActorDropLocation * GetActorForwardVector()));
+        GrabbedActor->RootMesh->SetSimulatePhysics(true);
+        GrabbedActor->RootMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+        GrabbedActor = nullptr;
+    }
+}
+
+void AGameCharacter::ThrowActorForward()
+{
+    if (GrabbedActor)
+    {
+        FVector TargetLocation = GetActorLocation() + (GetActorForwardVector() * ThrowDraggableActorForce);
+        ThrowActor(TargetLocation);
+    }
+}
+
+void AGameCharacter::ThrowActor(FVector TargetLocation)
+{
+    if (GrabbedActor)
+    {
+        GrabbedActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        GrabbedActor->SetActorLocation(GetActorLocation() + (ActorStartThrowLocation * GetActorForwardVector()));
+        FVector Direction = (TargetLocation - GrabbedActor->GetActorLocation()).GetSafeNormal();
+        FVector Force = Direction * ThrowDraggableActorForce;
+        GrabbedActor->RootMesh->SetSimulatePhysics(true);
+        GrabbedActor->RootMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+        GrabbedActor->RootMesh->AddImpulse(Force, NAME_None, true);
+        Log("ThrowActor: " + GrabbedActor->GetName());
+        Log("TargetLocation: " + TargetLocation.ToCompactString());
+        GrabbedActor->SetActorHiddenInGame(false);
+        GrabbedActor = nullptr;
+    }
 }

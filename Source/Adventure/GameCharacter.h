@@ -10,6 +10,8 @@
 #include "CharacterWidget.h"
 #include "SpeechBubble.h"
 #include "AudioAnalyserComponent.h"
+#include "NiagaraSystem.h"
+#include "DraggableActor.h"
 #include "GameCharacter.generated.h"
 
 
@@ -196,6 +198,47 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
 	AVehicle* ClosestVehicle;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "MouthMesh"))
+	ADraggableActor* GrabbedActor;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
+	TArray<ADraggableActor*> NearbyDraggableActors;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
+	ADraggableActor* ClosestDraggableActor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
+	float DetectDraggableActorRadiusMin = 50.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
+	float DetectDraggableActorRadiusMax = 500.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
+	float ThrowDraggableActorForce = 1000.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Slots", meta = (ToolTip = "PrimaryWeaponSlot"))
+	FName DraggableActorSlot = FName("DraggableActor");
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "LeftHandMeshLocation"))
+	FVector ActorDropLocation = FVector(50.f, 0.f, 0.f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "LeftHandMeshLocation"))
+	FVector ActorStartThrowLocation = FVector(50.f, 0.f, 0.f);
+
+	UFUNCTION(BlueprintCallable, Category = "Game Character", meta = (ToolTip = "Called when the character dies"))
+	virtual void GrabClosestActor();
+
+	UFUNCTION(BlueprintCallable, Category = "Game Character", meta = (ToolTip = "Called when the character dies"))
+	virtual void GrabActor(ADraggableActor* DraggableActor);
+
+	UFUNCTION(BlueprintCallable, Category = "Game Character", meta = (ToolTip = "Called when the character dies"))
+	virtual void DropActor();
+
+	UFUNCTION(BlueprintCallable, Category = "Game Character", meta = (ToolTip = "Called when the character dies"))
+	virtual void ThrowActorForward();
+
+	UFUNCTION(BlueprintCallable, Category = "Game Character", meta = (ToolTip = "Called when the character dies"))
+	virtual void ThrowActor(FVector TargetLocation);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Slots", meta = (ToolTip = "ItemsSlot"))
 	FName ItemsSlot = FName("Items");
@@ -313,6 +356,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "Max distance to detect if vehicle is near"))
 	float VelocityTolerance = 250.0f;
 
+
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Particle Effects")
+	UNiagaraSystem* GetHitParticles;
+
+
+
+
 	virtual void SetMovementAnimation(float DeltaTime);
 
 	virtual void UpdateAnimationStates(float DeltaTime);
@@ -320,7 +372,7 @@ public:
 	virtual void StopAnimation(UAnimSequence* AnimSequence);
 	virtual void StopAllAnimations(FName AnimationSlot);
 	virtual void InitCharacter();
-
+	virtual void DetectClosestActor(float DeltaTime);
 
 
 

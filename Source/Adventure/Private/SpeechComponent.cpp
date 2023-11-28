@@ -10,16 +10,16 @@ USpeechComponent::USpeechComponent()
 
 	PrimaryComponentTick.bCanEverTick = true;
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
-	InitComponent();
+	InitSpeechComponent();
 }
 
 void USpeechComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	InitComponent();
+	InitSpeechComponent();
 }
 
-void USpeechComponent::InitComponent()
+void USpeechComponent::InitSpeechComponent()
 {
 	if (GetOwner())
 	{
