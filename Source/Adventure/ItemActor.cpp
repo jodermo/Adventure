@@ -21,9 +21,6 @@ AItemActor::AItemActor()
 	UseSoundComponent->bAutoActivate = false;
 	UseSoundComponent->SetupAttachment(RootComponent);
 
-	DropSoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("DropSoundComponent"));
-	DropSoundComponent->bAutoActivate = false;
-	DropSoundComponent->SetupAttachment(RootComponent);
 
 }
 
@@ -71,7 +68,7 @@ void AItemActor::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiv
 
 void AItemActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	Super::OnOverlapBegin(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 	AAdventureCharacter* TargetCharacter = Cast<AAdventureCharacter>(OtherActor);
 	// Log("OnOverlapBegin: " + GetName() + " <- " + (OtherActor ? OtherActor->GetName() : "None"));
 	if (!Character) {
@@ -94,6 +91,7 @@ void AItemActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor
 
 void AItemActor::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	Super::OnOverlapEnd(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
 	// This function is called when the actor stops overlapping with 'OtherActor'
 	// You can perform actions related to the end of overlap here
 }
@@ -202,39 +200,6 @@ void AItemActor::TriggerUseEffects()
 		if (!UseSoundComponent->IsPlaying())
 		{
 			UseSoundComponent->Play();
-		}
-	}
-}
-
-void AItemActor::TriggerDropEffects(AAdventureCharacter* TargetCharacter, bool PlaySound)
-{
-	UWorld* World = GetWorld();
-	if (World && !TargetCharacter && DropParticles)
-	{
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
-			World,
-			DropParticles,
-			(GetActorLocation() + DropParticlesLocation),
-			GetActorRotation()
-		);
-	}
-	if (TargetCharacter && DropCharacterParticles)
-	{
-		FName ParticleComponentName = ItemName.IsEmpty() ? FName(TEXT("ItemParticles")) : FName(*ItemName + FString(" ItemParticles"));
-		UNiagaraComponent* ParticleComponent = UNiagaraFunctionLibrary::SpawnSystemAttached(
-			DropCharacterParticles,
-			TargetCharacter->GetRootComponent(),
-			ParticleComponentName,
-			DropCharacterParticlesLocation,
-			FRotator(0.0f, 0.0f, 0.0f),
-			EAttachLocation::KeepRelativeOffset,
-			true
-		);
-	}
-	if (PlaySound && DropSoundComponent) {
-		if (!DropSoundComponent->IsPlaying())
-		{
-			DropSoundComponent->Play();
 		}
 	}
 }

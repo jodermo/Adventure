@@ -198,26 +198,24 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
 	AVehicle* ClosestVehicle;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "MouthMesh"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character")
 	ADraggableActor* GrabbedActor;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character")
 	TArray<ADraggableActor*> NearbyDraggableActors;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character")
 	ADraggableActor* ClosestDraggableActor;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character")
 	float DetectDraggableActorRadiusMin = 50.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character")
 	float DetectDraggableActorRadiusMax = 500.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "Closest vehicle"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character")
 	float ThrowDraggableActorForce = 1000.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Slots", meta = (ToolTip = "PrimaryWeaponSlot"))
-	FName DraggableActorSlot = FName("DraggableActor");
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "LeftHandMeshLocation"))
 	FVector ActorDropLocation = FVector(50.f, 0.f, 0.f);
@@ -225,19 +223,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "LeftHandMeshLocation"))
 	FVector ActorStartThrowLocation = FVector(50.f, 0.f, 0.f);
 
-	UFUNCTION(BlueprintCallable, Category = "Game Character", meta = (ToolTip = "Called when the character dies"))
+	UFUNCTION(BlueprintCallable, Category = "Game Character")
 	virtual void GrabClosestActor();
 
-	UFUNCTION(BlueprintCallable, Category = "Game Character", meta = (ToolTip = "Called when the character dies"))
+	UFUNCTION(BlueprintCallable, Category = "Game Character")
 	virtual void GrabActor(ADraggableActor* DraggableActor);
 
-	UFUNCTION(BlueprintCallable, Category = "Game Character", meta = (ToolTip = "Called when the character dies"))
+	UFUNCTION(BlueprintCallable, Category = "Game Character")
 	virtual void DropActor();
 
-	UFUNCTION(BlueprintCallable, Category = "Game Character", meta = (ToolTip = "Called when the character dies"))
+	UFUNCTION(BlueprintCallable, Category = "Game Character")
 	virtual void ThrowActorForward();
 
-	UFUNCTION(BlueprintCallable, Category = "Game Character", meta = (ToolTip = "Called when the character dies"))
+	UFUNCTION(BlueprintCallable, Category = "Game Character")
 	virtual void ThrowActor(FVector TargetLocation);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Slots", meta = (ToolTip = "ItemsSlot"))

@@ -382,17 +382,14 @@ float AGameCharacter::TakeDamageAtLocation(float DamageAmount, FVector HitLocati
     ImpulseAtLocation(ImpulseVelocity, HitLocation);
     ReceiveDamage(DamageAmount);
     UWorld* World = GetWorld();
-    if (GetHitParticles)
+    if (!IsPlayer && GetHitParticles && World)
     {
-        if (World)
-        {
-            UNiagaraFunctionLibrary::SpawnSystemAtLocation(
-                World,
-                GetHitParticles,
-                GetActorLocation(),
-                GetActorRotation()
-            );
-        }
+        UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+            World,
+            GetHitParticles,
+            GetActorLocation(),
+            GetActorRotation()
+        );
     }
 
     return DamageAmount;
@@ -424,7 +421,6 @@ void AGameCharacter::DetectClosestActor(float DeltaTime)
         }
         if (NearestActor && NearestActor != ClosestDraggableActor)
         {
-            Log("ClosestActor: " + NearestActor->GetName());
             ClosestDraggableActor = NearestActor;
         }
     }
@@ -441,13 +437,8 @@ void AGameCharacter::GrabClosestActor()
 {
     if (ClosestDraggableActor && !GrabbedActor)
     {
-        Log("GrabClosestActor: " + ClosestDraggableActor->GetName());
         GrabActor(ClosestDraggableActor);
         ClosestDraggableActor = nullptr;
-    }
-    else 
-    {
-        Log("GrabClosestActor: None");
     }
 }
 
@@ -455,11 +446,7 @@ void AGameCharacter::GrabActor(ADraggableActor* DraggableActor)
 {
     if (DraggableActor && !GrabbedActor)
     {
-        Log("GrabActor: " + DraggableActor->GetName());
-        GrabbedActor = DraggableActor;
-        GrabbedActor->RootMesh->SetSimulatePhysics(false);
-        GrabbedActor->RootMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-        DraggableActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, DraggableActorSlot);
+        DraggableActor->GetsGrabbed(this);
     }
 }
 
@@ -467,13 +454,8 @@ void AGameCharacter::DropActor()
 {
     if (GrabbedActor)
     {
-        Log("DropActor: " + GrabbedActor->GetName());
-        GrabbedActor->SetActorHiddenInGame(false);
-        GrabbedActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-        GrabbedActor->SetActorLocation(GetActorLocation() + (ActorDropLocation * GetActorForwardVector()));
-        GrabbedActor->RootMesh->SetSimulatePhysics(true);
-        GrabbedActor->RootMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-        GrabbedActor = nullptr;
+        GrabbedActor->GetsDropped(this);
+
     }
 }
 
@@ -490,16 +472,9 @@ void AGameCharacter::ThrowActor(FVector TargetLocation)
 {
     if (GrabbedActor)
     {
-        GrabbedActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-        GrabbedActor->SetActorLocation(GetActorLocation() + (ActorStartThrowLocation * GetActorForwardVector()));
-        FVector Direction = (TargetLocation - GrabbedActor->GetActorLocation()).GetSafeNormal();
-        FVector Force = Direction * ThrowDraggableActorForce;
-        GrabbedActor->RootMesh->SetSimulatePhysics(true);
-        GrabbedActor->RootMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-        GrabbedActor->RootMesh->AddImpulse(Force, NAME_None, true);
-        Log("ThrowActor: " + GrabbedActor->GetName());
-        Log("TargetLocation: " + TargetLocation.ToCompactString());
-        GrabbedActor->SetActorHiddenInGame(false);
+        GrabbedActor->GetsThrown(this, TargetLocation);
         GrabbedActor = nullptr;
+
+
     }
 }

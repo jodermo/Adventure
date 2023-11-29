@@ -59,26 +59,11 @@ public:
 	FVector UseParticlesLocation = FVector(0.0f, 0.0f, 0.0f);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Effects")
-	UNiagaraSystem* DropParticles;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Effects")
-	FVector DropParticlesLocation = FVector(0.0f, 0.0f, 0.0f);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Effects")
-	UNiagaraSystem* DropCharacterParticles;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Effects")
-	FVector DropCharacterParticlesLocation = FVector(0.0f, 0.0f, 0.0f);
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Effects")
 	UAudioComponent* PickUpSoundComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Effects")
 	UAudioComponent* UseSoundComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Effects")
-	UAudioComponent* DropSoundComponent;
 
 	UFUNCTION(BlueprintCallable,  Category = "Item Effects")
 	virtual void TriggerPickUpEffects(AAdventureCharacter* TargetCharacter);
@@ -87,8 +72,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Item Effects")
 	virtual void TriggerUseEffects();
 
-	UFUNCTION(BlueprintCallable, Category = "Item Effects")
-	virtual void TriggerDropEffects(AAdventureCharacter* TargetCharacter, bool PlaySound);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Logging")
 	AAdventureCharacter* InteractionCharacter;
@@ -197,10 +180,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Item Actor", meta = (ToolTip = "GetCharacterItemSlot"))
 	FName GetCharacterItemSlot(AAdventureCharacter* TargetCharacter, bool FromInventar);
 
-	UFUNCTION()
-	virtual void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	UFUNCTION()
-	virtual void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	virtual void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
+
+	virtual void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
 
 };
