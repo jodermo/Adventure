@@ -33,6 +33,9 @@ public:
 	bool Draggable = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Draggable Actor")
+	bool CanHitPlayer = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Draggable Actor")
 	float MinHitImpulseStrength = 10.0f;
 
 

@@ -276,10 +276,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "The number of times the character has jumped"))
 	int32 JumpCount = 0;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "The current movement speed of the character"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "The current movement speed of the character"))
 	float JumpHeight = 200.0f;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "The current movement speed of the character"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Character", meta = (ToolTip = "The current movement speed of the character"))
 	float JumpGravity = 10.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game Character", meta = (ToolTip = "The Scene Capture Component used for face capture", AllowPrivateAccess = "true"))

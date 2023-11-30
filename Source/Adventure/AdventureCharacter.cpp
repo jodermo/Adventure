@@ -542,7 +542,8 @@ bool AAdventureCharacter::GUIIsActive()
 void AAdventureCharacter::UpdateGameInputState(float DeltaTime)
 {
 	bool GUIActive = GUIIsActive();
-	if (!GUIActive)
+	bool MouseAvailable = GUIActive || TopDownView || MapView;
+	if (!MouseAvailable)
 	{
 		if (EgoView)
 		{

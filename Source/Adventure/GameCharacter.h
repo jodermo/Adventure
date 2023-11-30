@@ -356,7 +356,7 @@ public:
 
 
 
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Particle Effects")
 	UNiagaraSystem* GetHitParticles;
 

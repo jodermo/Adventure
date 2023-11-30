@@ -106,8 +106,12 @@ void ADraggableActor::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UP
 	{
 		return;
 	}
-	ObjectHits++;
 	AGameCharacter* OtherCharacter = Cast<AGameCharacter>(OtherActor);
+	if (OtherCharacter && !CanHitPlayer && OtherCharacter->IsPlayer)
+	{
+		return;
+	}
+	ObjectHits++;
 	if (OtherCharacter)
 	{
 		OtherCharacter->TakeDamageAtLocation(ImpulseStrength * ThrowDamageFactor, GetActorLocation(), GetVelocity() * ThrowImpulseStength, this);

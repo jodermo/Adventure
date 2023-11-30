@@ -451,7 +451,8 @@ void AAdventureGameModeBase::CloseControls()
 
 void AAdventureGameModeBase::GameOver(AGameCharacter* LooserCharacter, bool GameEnded)
 {
-	LooserCharacters.Add(LooserCharacter);
+	/*
+		LooserCharacters.Add(LooserCharacter);
 	GameOverCharacters.Add(LooserCharacter);
 	if (InGameCharacters.Contains(LooserCharacter)) 
 	{
@@ -462,11 +463,16 @@ void AAdventureGameModeBase::GameOver(AGameCharacter* LooserCharacter, bool Game
 		GameIsOver = true;
 		PauseGame();
 	}
+	
+	*/
+
 }
 
 void AAdventureGameModeBase::WinGame(AGameCharacter* WinnerCharacter, bool GameEnded)
 {
-	WinnerCharacters.Add(WinnerCharacter);
+	/*
+	* 
+	* 	WinnerCharacters.Add(WinnerCharacter);
 	GameOverCharacters.Add(WinnerCharacter);
 	if (InGameCharacters.Contains(WinnerCharacter))
 	{
@@ -477,6 +483,8 @@ void AAdventureGameModeBase::WinGame(AGameCharacter* WinnerCharacter, bool GameE
 		GameIsOver = true;
 		PauseGame();
 	}
+	*/
+
 }
 
 void AAdventureGameModeBase::StartGame()

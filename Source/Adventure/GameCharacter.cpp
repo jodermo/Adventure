@@ -39,7 +39,7 @@ AGameCharacter::AGameCharacter()
     AudioAnalyser = CreateDefaultSubobject<UAudioAnalyserComponent>(TEXT("AudioAnalyser"));
     AudioAnalyser->Character = this;
 
-    GetHitParticles = CreateDefaultSubobject<UNiagaraSystem>(TEXT("GetHitParticles"));
+   // GetHitParticles = CreateDefaultSubobject<UNiagaraSystem>(TEXT("GetHitParticles"));
 
 
 	InitCharacter();
@@ -381,8 +381,9 @@ float AGameCharacter::TakeDamageAtLocation(float DamageAmount, FVector HitLocati
    
     ImpulseAtLocation(ImpulseVelocity, HitLocation);
     ReceiveDamage(DamageAmount);
+
     UWorld* World = GetWorld();
-    if (!IsPlayer && GetHitParticles && World)
+    if (GetHitParticles && World)
     {
         UNiagaraFunctionLibrary::SpawnSystemAtLocation(
             World,
